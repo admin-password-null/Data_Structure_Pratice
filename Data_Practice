@@ -1,0 +1,125 @@
+
+//#include <iostream>
+#include<stdio.h>
+#define Value 10
+
+//创建ASet的集合（结构体）
+typedef struct {
+    int data[Value];
+    int length;
+}ASet;
+
+void Create_Collection(ASet& s, int a[], int n);
+void Output_Elements(ASet s);
+void Judge(ASet s, int e);
+void And_set(ASet& s1, ASet& s2, ASet& s3);
+void Difference_set(ASet& s1, ASet& s2, ASet& s4);
+void Intersection_set(ASet& s1, ASet& s2, ASet& s5);
+
+
+int main256565666()
+{
+    int a0[] = { 11,22,33,44,55,66,77,88,99,100 };
+    int a1[] = { 23,22,56,55,66,51,23,1,2,59 };
+    int a2[] = { 24,25,53,55,66,51,25,41,26,59 };
+    int n = Value, e = 66;
+    ASet s, s1, s2, s3,s4,s5;
+  
+    Create_Collection(s1, a1, n);//这两个是创建s2和s3。
+    Create_Collection(s2, a2, n);
+    
+    Create_Collection(s,a0,n);
+    Output_Elements(s);
+    Judge(s,e);
+    And_set(s1, s2, s3);
+    Difference_set(s1, s2, s4);
+    Intersection_set(s1, s2, s5);
+
+    Output_Elements(s3);//输出看看并集。
+    //Output_Elements(s4);//输出看看差集，好像因为引用所以这下面两个输出有问题。
+    //Output_Elements(s5);//输出看看交集。
+    return 0;
+}
+
+
+//创建集合
+void Create_Collection(ASet &s,int a[],int n) {//把数组a放进来，n是他的长度。
+    int i;
+    for (i = 0; i < n; i++) {
+        s.data[i] = a[i];//把数组a给结构体ASet里面的数组data[];
+    }
+    s.length = n;
+}
+
+//输出集合
+void Output_Elements(ASet s) {
+    int i;
+    for (i = 0; i < s.length; i++) {
+        printf("%d\t",s.data[i]);
+    }
+    printf("\n");
+}
+
+////判断元素是否在集合中
+void Judge(ASet s,int e) {
+    int i,j=0;
+    for (i = 0; i < s.length;i++) {
+        if (e == s.data[i]) {
+            //return true;
+            //printf(" %d,在集合中\n",s.data[i]);
+            j++;
+        }
+        //else {
+        //    //return false;
+        //    printf(" %d,不在集合中\n", e);
+        //}
+    }
+    //为了只输出一次，不过下面这种方式有点傻。
+    if (j == 1) {
+        printf(" %d,在集合中\n", e);
+    }
+    else {
+        printf(" %d,不在集合中\n", e);
+    }
+}
+
+//并集，在主函数创建3个类型为ASet的集合,s1,s2用来求,在用一个s3来接收并集；
+void And_set(ASet& s1, ASet& s2, ASet& s3) {
+    int i;
+    s3.length = 0;
+    for (i = 0; i < s1.length; i++) {
+        s3.data[i] = s1.data[i];//把集合1里面的所有值先给3，然后再把2和1不同的值也个3；
+        if (s2.data[i] != s1.data[i]) {
+            s3.data[i] = s2.data[i];
+            s3.length++;
+        }
+        /*if (!Judge(s1, s2.data[i])) {
+            s3.data[i] = s2.data[i];
+            s3.length++;
+        }*/
+    }
+   /* printf("%d\n", s3.length);*///这个是测试看看这个并集的长度。
+}
+
+//差集,这里我写的是A-B。
+void Difference_set(ASet& s1, ASet& s2, ASet& s4) {//用4来存差集。
+    int i;
+    for (i = 0; i < s1.length;i++) {
+        if (s1.data[i] != s2.data[i]) {//当1与2不同的时候就把1的给4，，如果把2给4，即为B-A。
+            s4.data[i] = s1.data[i];
+            s4.length++;
+        }
+    }
+    //printf("%d\n", s4.length);// 一样的测长度。
+}
+
+//交集
+void Intersection_set(ASet& s1, ASet& s2, ASet& s5) {//5 存交集。
+    int i;
+    for (i = 0; i < s1.length; i++) {
+        if (s1.data[i] = s2.data[i]) {//当1与2相同的时候就把1的给5，，如果把2给5，也一样。
+            s5.data[i] = s1.data[i];
+            s5.length++;
+        }
+    }
+}
